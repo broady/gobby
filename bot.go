@@ -13,6 +13,7 @@ var (
 	server  = flag.String("server", "", "server host:port")
 	pass    = flag.String("pass", "", "server password")
 	channel = flag.String("chan", "", "channel")
+	secret  = flag.String("secret", "", "secret")
 )
 
 func authLog(c *irc.Conn) {
@@ -31,6 +32,9 @@ func main() {
 	c.SSL = true
 	authLog(c)
 	PlusOne(c, *channel)
+	if *secret != "" {
+		Auth(c, *channel, *secret)
+	}
 	if err := c.Connect(*server, *pass); err != nil {
 		log.Exit(err)
 	}

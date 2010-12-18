@@ -6,6 +6,7 @@ include $(GOROOT)/src/Make.inc
 
 TARG=gobby
 GOFILES=\
+	auth.go\
 	bot.go\
 	plus1.go\
 	tail.go\
