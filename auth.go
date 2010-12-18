@@ -8,7 +8,7 @@ import (
 )
 
 func Auth(conn *irc.Conn, channel, secret string) {
-	conn.AddHandler("353", func(c *irc.Conn, l *irc.Line) {
+	conn.AddHandler("353", func(c *irc.Conn, l *irc.Line) { // NAMES
 		if l.Args[2] != channel {
 			return
 		}
@@ -22,7 +22,7 @@ func Auth(conn *irc.Conn, channel, secret string) {
 		}
 	})
 	conn.AddHandler("PRIVMSG", func(c *irc.Conn, l *irc.Line) {
-		if strings.HasPrefix(l.Nick, "#") {
+		if strings.HasPrefix(l.Args[0], "#") {
 			return
 		}
 		p := strings.Split(l.Args[1], " ", -1)
