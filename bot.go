@@ -5,7 +5,6 @@ import (
 	irc "github.com/nf/goirc/client"
 	"log"
 	"os"
-	"strings"
 )
 
 var (
@@ -14,13 +13,8 @@ var (
 	pass    = flag.String("pass", "", "server password")
 	channel = flag.String("chan", "", "channel")
 	secret  = flag.String("secret", "", "secret")
+	ssl     = flag.Bool("ssl", false, "connect via ssl")
 )
-
-func authLog(c *irc.Conn) {
-	Tail(c, "#log", "/var/log/auth.log", func(s string) bool {
-		return !strings.Contains(s, "cron:session")
-	})
-}
 
 func main() {
 	flag.Parse()
@@ -29,8 +23,7 @@ func main() {
 		os.Exit(1)
 	}
 	c := irc.New(*nick, *nick, *nick)
-	c.SSL = true
-	authLog(c)
+	c.SSL = *ssl
 	PlusOne(c, *channel)
 	if *secret != "" {
 		Auth(c, *channel, *secret)

@@ -2,6 +2,7 @@ package main
 
 import (
 	irc "github.com/nf/goirc/client"
+	"regexp"
 	"sync"
 )
 
@@ -20,6 +21,13 @@ func AutoJoin(conn *irc.Conn, channel string) {
 	})
 }
 
+var canonRe = regexp.MustCompile("[^a-zA-Z]+")
+const canonMaxLen = 10
+
 func Canonical(nick string) string {
+	nick = canonRe.ReplaceAllString(nick, "")
+	if len(nick) > canonMaxLen {
+		nick = nick[:canonMaxLen]
+	}
 	return nick
 }
