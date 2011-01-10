@@ -9,9 +9,11 @@ import (
 	"sync"
 )
 
-var plusOneMap = make(map[string]int)
-var plusOneLock sync.Mutex
-var plusOneRe = regexp.MustCompile(`^[^ :]+: \+1$`)
+var (
+	plusOneMap  = make(map[string]int)
+	plusOneLock sync.Mutex
+	plusOneRe   = regexp.MustCompile(`^[^ :]+: [+\-]1$`)
+)
 
 func PlusOne(conn *irc.Conn, channel string) {
 	AutoJoin(conn, channel)
@@ -19,26 +21,34 @@ func PlusOne(conn *irc.Conn, channel string) {
 		if l.Args[0] != channel {
 			return
 		}
-		if l.Args[1] == ".scores" {
+		m := l.Args[1]
+		if m == ".scores" {
 			plusOneScores(c, channel)
 			return
 		}
-		if !plusOneRe.MatchString(l.Args[1]) {
+		if !plusOneRe.MatchString(m) {
 			return
 		}
-		nick := strings.Split(l.Args[1], ":", 2)[0]
+		nick := strings.Split(m, ":", 2)[0]
+		if c.GetNick(nick) == nil {
+			return
+		}
 		nick = Canonical(nick)
 		if len(nick) == 0 {
 			return
 		}
-		plusOneCount(nick)
+		n := 1
+		if m[len(m)-2] == '-' {
+			n = -1
+		}
+		plusOneCount(nick, n)
 	})
 }
 
-func plusOneCount(nick string) {
+func plusOneCount(nick string, n int) {
 	plusOneLock.Lock()
-	defer plusOneLock.Unlock()
-	plusOneMap[nick]++
+	plusOneMap[nick] += n
+	plusOneLock.Unlock()
 }
 
 func plusOneScores(c *irc.Conn, channel string) {
