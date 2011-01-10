@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	irc "github.com/nf/goirc/client"
+	irc "github.com/fluffle/goirc/client"
 	"log"
 	"os"
 )

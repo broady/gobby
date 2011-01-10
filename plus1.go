@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	irc "github.com/nf/goirc/client"
+	irc "github.com/fluffle/goirc/client"
 	"regexp"
 	"strings"
 	"sync"

@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	irc "github.com/nf/goirc/client"
+	irc "github.com/fluffle/goirc/client"
 	"strings"
 )
 

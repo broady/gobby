@@ -1,7 +1,7 @@
 package main
 
 import (
-	irc "github.com/nf/goirc/client"
+	irc "github.com/fluffle/goirc/client"
 	"regexp"
 	"sync"
 )
