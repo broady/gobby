@@ -12,8 +12,8 @@ var (
 )
 
 type Video struct {
-	XMLName		xml.Name "entry"
-	Title		string
+	XMLName xml.Name "entry"
+	Title   string
 }
 
 func YouTuber(conn *irc.Conn, channel string) {
@@ -43,5 +43,5 @@ func printMetadataForKey(c *irc.Conn, channel string, key string) {
 	}
 	var m Video = Video{xml.Name{}, ""}
 	xml.Unmarshal(r.Body, &m)
-	c.Privmsg(channel, "  -> " + m.Title)
+	c.Privmsg(channel, "  -> "+m.Title)
 }
