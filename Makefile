@@ -9,6 +9,7 @@ GOFILES=\
 	auth.go\
 	bot.go\
 	plus1.go\
+	youtube.go\
 	tail.go\
 	util.go\
 
